@@ -7,19 +7,19 @@ from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
 print("Tensorflow version:", tf.__version__)
 
-image_folder=""
+image_folder="data/bw"
 
 # load the different models
-image_size = 256 # make it small so the model doesn't explode
+image_size = 500 # make it small so the model doesn't explode
 batch_size = 64
 
 # train it
 # Consider mirroring because of the camera
 datagen_ts = ImageDataGenerator(horizontal_flip=True)
-ts_generator = datagen_ts.flow_from_directory(image_folder + '/train', target_size=(image_size, image_size),color_mode='rgb', batch_size=batch_size, class_mode='categorical', shuffle=True)
+ts_generator = datagen_ts.flow_from_directory(image_folder + '/train', target_size=(image_size, image_size),color_mode='grayscale', batch_size=batch_size, class_mode='categorical', shuffle=True)
 
 datagen_validation = ImageDataGenerator(horizontal_flip=True)
-validation_generator = datagen_validation.flow_from_directory(image_folder + 'test', target_size=(image_size, image_size),color_mode='rgb', batch_size=batch_size, class_mode='categorical', shuffle=True)
+validation_generator = datagen_validation.flow_from_directory(image_folder + '/test', target_size=(image_size, image_size),color_mode='grayscale', batch_size=batch_size, class_mode='categorical', shuffle=True)
 
 # Use convnet as model https://en.wikipedia.org/wiki/Convolutional_neural_network
 model = Sequential()
@@ -67,7 +67,7 @@ model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(Dropout(0.25))
 
-model.add(Dense(units=27, activation='softmax'))
+model.add(Dense(units=26, activation='softmax'))
 
 optimizer=Adam(lr=0.0005)
 model.compile(optimizer=optimizer, loss='categorical_crossentropy', metrics=['accuracy'])
