@@ -16,6 +16,7 @@ Run ```pip3 install ``` of the following packages
 - IPython
 - livelossplot
 - Pillow (for images)
+- scipy
 - tensorflow (Run ```pip3 install tensorflow-macos``` if you are using an M1/M2 chip or if you are using gpu ```pip3 install tensorflow-gpu```)
 - protobuf, (this is a bit messed up and you may need to down grade ```pip3 install protobuf==3.19.4```)
 
