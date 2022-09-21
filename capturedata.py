@@ -17,7 +17,7 @@ for i in string.ascii_uppercase:
         os.makedirs("data/test/"+i)
 
 # Train or test 
-mode = 'test'
+mode = 'train'
 directory = 'data/'+mode+'/'
 
 count = {
@@ -56,7 +56,12 @@ while True:
     # Simulating mirror image
     frame = cv2.flip(frame, 1)
     # extract the frame
-    roi = frame[10:510, 220:720]
+    h, w, _ = frame.shape
+    start = abs(h - w) // 2
+    
+    roi = frame[(h // 2) - 250:(h // 2)+250, (w//2) - 250:(w//2)+250]
+
+    #roi = frame[10:510, 220:720]
     cv2.imshow("test", roi)
     
     interrupt = cv2.waitKey(10)
@@ -65,9 +70,11 @@ while True:
     if interrupt & 0xFF == ord('a'):
         cv2.imwrite(directory+'A/'+str(count['a'])+'.jpg', roi)
         count['a'] = count['a'] + 1
+        print('A')
     if interrupt & 0xFF == ord('b'):
         cv2.imwrite(directory+'B/'+str(count['b'])+'.jpg', roi)
         count['b'] = count['b'] + 1
+        print('B')
     if interrupt & 0xFF == ord('c'):
         cv2.imwrite(directory+'C/'+str(count['c'])+'.jpg', roi)
         count['c'] = count['c'] + 1
