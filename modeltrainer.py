@@ -15,7 +15,7 @@ print("Tensorflow version:", tf.__version__)
 image_folder="data/bw"
 
 # load the different models
-image_size = 500 # make it small so the model doesn't explode
+image_size = 256 # make it small so the model doesn't explode
 batch_size = 64
 
 # train it
