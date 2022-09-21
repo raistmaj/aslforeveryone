@@ -13,7 +13,7 @@ import cv2
 from PIL import Image
 
 class ModelEvaluator:
-    def __init__(self, model_json, model_weights, on_text_callback):
+    def __init__(self, model_json, model_weights, on_text_callback=None):
         if not model_json:
             raise('Provide a model definition')
         if not model_weights:
@@ -86,14 +86,7 @@ class ModelEvaluator:
         while True:
             re, frame = video_source.read()
             if re:
-                filpped_frame = cv2.flip(frame,1)
-                region_to_evalue = filpped_frame[10:510, 220:720]
-                image_blur = cv2.GaussianBlur(region_to_evalue,(3,3), 0)
-                bw_image = cv2.cvtColor(image_blur, cv2.COLOR_BGR2GRAY)
-                
-                # evaluate the same region we did with the model frame[10:510, 220:720]
-                # Sobel edge detection
-                sobelxy = cv2.Sobel(src=bw_image, ddepth=cv2.CV_8U, dx=1, dy=1, ksize=5)
+                sobelxy = self.ProcessImageFrame(frame)
                 cv2.imshow("test", sobelxy)
                 output = self.__inference_single_image(sobelxy)
                 if output == "":
@@ -105,6 +98,22 @@ class ModelEvaluator:
         video_source.release()
         cv2.destryAllWindows()
 
+    def ProcessImageFrame(self, frame):
+            filpped_frame = cv2.flip(frame,1)
+            region_to_evalue = filpped_frame[10:510, 220:720]
+            image_blur = cv2.GaussianBlur(region_to_evalue,(3,3), 0)
+            bw_image = cv2.cvtColor(image_blur, cv2.COLOR_BGR2GRAY)
+            
+            # evaluate the same region we did with the model frame[10:510, 220:720]
+            # Sobel edge detection
+            sobelxy = cv2.Sobel(src=bw_image, ddepth=cv2.CV_8U, dx=1, dy=1, ksize=5)
+            return sobelxy
+
+    def Predict(self, frame):
+        sobelxy = self.ProcessImageFrame(frame)
+        model_result = self.__inference_single_image(sobelxy)
+        return model_result
+
     def ProcessImageRawData(self, image_raw_data):
         model_result = self.__inference_single_image(image_raw_data)
         self.on_text_callback(model_result)
@@ -112,6 +121,6 @@ class ModelEvaluator:
 def test_call_back(one_text):
     print(one_text)
 
-me = ModelEvaluator(model_json='model/model.json', model_weights='model/model-weights.h5', on_text_callback=test_call_back)
+# me = ModelEvaluator(model_json='model/model.json', model_weights='model/model-weights.h5', on_text_callback=test_call_back)
 
-me.ProcessStream(0)
+# me.ProcessStream(0)
