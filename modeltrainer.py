@@ -1,3 +1,5 @@
+import os
+os.add_dll_directory("C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v11.7/bin")
 import numpy as np
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Dense, Input, Dropout,Flatten, Conv2D
@@ -5,6 +7,9 @@ from tensorflow.keras.layers import BatchNormalization, Activation, MaxPooling2D
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.optimizers import Adam
 import tensorflow as tf
+
+
+
 print("Tensorflow version:", tf.__version__)
 
 image_folder="data/bw"
@@ -25,28 +30,28 @@ validation_generator = datagen_validation.flow_from_directory(image_folder + '/t
 model = Sequential()
 
 # Layer 1
-model.add(Conv2D(64,(3,3),padding='same',input_shape=(image_size,image_size,1)))
+model.add(Conv2D(32,(3,3),padding='same',input_shape=(image_size,image_size,1)))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 
 # Layer 2
-model.add(Conv2D(128,(5,5),padding='same'))
+model.add(Conv2D(64,(5,5),padding='same'))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 
 # Layer 3
-model.add(Conv2D(512,(4,4),padding='same'))
+model.add(Conv2D(128,(4,4),padding='same'))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Dropout(0.25))
 
 # Layer 4
-model.add(Conv2D(512,(4,4),padding='same'))
+model.add(Conv2D(128,(4,4),padding='same'))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2,2)))
@@ -57,12 +62,12 @@ model.add(Flatten())
 
 # Connet layers
 # Adding a fully connected layer
-model.add(Dense(units=256))
+model.add(Dense(units=64))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(Dropout(0.25))
 
-model.add(Dense(units=512, activation='relu'))
+model.add(Dense(units=128, activation='relu'))
 model.add(BatchNormalization())
 model.add(Activation('relu'))
 model.add(Dropout(0.25))
@@ -76,7 +81,7 @@ model.summary()
 model.fit_generator(
     ts_generator, 
     steps_per_epoch=ts_generator.n//ts_generator.batch_size,
-    epochs=15,
+    epochs=120,
     validation_data=validation_generator,
     validation_steps=validation_generator.n//validation_generator.batch_size)
 
@@ -86,3 +91,8 @@ with open('model/model.json', "w") as json_file:
     json_file.write(model_json)
 
 model.save_weights('model/model-weights.h5')
+# Save status if we want to refit
+model.save('model/model-full', save_format='tf')
+
+# to load
+# load_model = tf.keras.models.load_model('')
