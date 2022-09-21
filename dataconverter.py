@@ -57,8 +57,6 @@ for i in string.ascii_uppercase:
         #Sobel Edge Detection
         image_blur = cv2.GaussianBlur(current_image,(3,3), 0)
 
-        sobelx = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=1, dy=0, ksize=5)
-        sobely = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=0, dy=1, ksize=5)
         sobelxy = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=1, dy=1, ksize=5)
 
         edges = sobelxy
@@ -66,7 +64,8 @@ for i in string.ascii_uppercase:
         # edges = cv2.Canny(image=current_image, threshold1=100, threshold2=100)
 
         print('Writting ' + os.path.join(current_output_folder, current_file))
-        cv2.imwrite(os.path.join(current_output_folder, current_file), edges)
+        resized = cv2.resize(edges, (256,256), interpolation=cv2.INTER_AREA)
+        cv2.imwrite(os.path.join(current_output_folder, current_file), resized)
     
     # test
     current_folder = input_validation_set + i
@@ -85,9 +84,6 @@ for i in string.ascii_uppercase:
 
         #Sobel Edge Detection
         image_blur = cv2.GaussianBlur(current_image,(3,3), 0)
-
-        sobelx = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=1, dy=0, ksize=5)
-        sobely = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=0, dy=1, ksize=5)
         sobelxy = cv2.Sobel(src=image_blur, ddepth=cv2.CV_64F, dx=1, dy=1, ksize=5)
 
         edges = sobelxy
@@ -95,6 +91,7 @@ for i in string.ascii_uppercase:
         # edges = cv2.Canny(image=current_image, threshold1=150, threshold2=100)
 
         print('Writting ' + os.path.join(current_output_folder, current_file))
-        cv2.imwrite(os.path.join(current_output_folder, current_file), edges)
+        resized = cv2.resize(edges, (256,256), interpolation=cv2.INTER_AREA)
+        cv2.imwrite(os.path.join(current_output_folder, current_file), resized)
 
 
