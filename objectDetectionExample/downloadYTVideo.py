@@ -152,8 +152,13 @@ createPath(VIDEO_FRAME_PATH)
 createPath(VIDEO_TRAIN_PATH)
 createPath(VIDEO_TEST_PATH)
 
-process_videos()
+# step1: download the videos
+# process_videos()
 
-# label your data using labelImg after download, then run the following commands
+# step2: label your data using labelImg after download, then run the following commands
+
+# step3: remove the frames without label
 # removeFramesWithoutLabel()
+
+# step4: split the train and test data
 # splitTrainAndTestData()
