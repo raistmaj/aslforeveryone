@@ -23,7 +23,7 @@ MSASL_Data["VideoName"] = split_df[1]
 VIDEO_DOWNLOAD_PATH = os.path.join(os.getcwd(), 'data', 'videos')
 TRIMMED_VIDEO_PATH = os.path.join(
     os.getcwd(), 'data', 'videos', 'trimmedVideos')
-VIDEO_FRAME_PATH = os.path.join(os.getcwd(), 'data', 'frames')
+VIDEO_FRAME_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'frames')
 
 def process_videos():
     gestureList = set(["thank you", "goodbye", "hello", "yes", "no"])
