@@ -13,7 +13,6 @@ PRETRAINED_MODEL_PATH = os.path.join(os.getcwd(), 'pre-trained-models')
 APIMODEL_PATH = os.path.join(WORKSPACE_PATH, 'models')
 ANNOTATION_PATH = os.path.join(WORKSPACE_PATH, 'annotations')
 CONFIG_PATH = os.path.join(MODEL_PATH, 'pipeline.config')
-CHECKPOINT_PATH = os.path.join(MODEL_PATH, 'checkpoint')
 
 createPath(WORKSPACE_PATH)
 createPath(SCRIPTS_PATH)
