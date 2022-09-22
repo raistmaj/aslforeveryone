@@ -27,13 +27,13 @@ VIDEO_FRAME_PATH = os.path.join(os.getcwd(), 'data', 'frames')
 
 def process_videos():
     gestureList = set(["thank you", "goodbye", "hello", "yes", "no"])
-    # download_videos(gestureList)
+    download_videos(gestureList)
 
     # trim the video by the start and end time
-    # files = [f for f in os.listdir(VIDEO_DOWNLOAD_PATH) if os.path.isfile(
-    #     join(VIDEO_DOWNLOAD_PATH, f))]
-    # for file in files:
-    #     TrimVideoClip(file)
+    files = [f for f in os.listdir(VIDEO_DOWNLOAD_PATH) if os.path.isfile(
+        join(VIDEO_DOWNLOAD_PATH, f))]
+    for file in files:
+        TrimVideoClip(file)
 
     # convert the video to frames
     files = [f for f in os.listdir(TRIMMED_VIDEO_PATH) if os.path.isfile(
