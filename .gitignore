@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 
-objectDetectionExample/data/frames
 objectDetectionExample/data/videos

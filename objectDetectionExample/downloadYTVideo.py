@@ -71,13 +71,13 @@ def getVideoName(file):
     return file.split('_')[1][:-4]
 
 
-def getCleanText(file):
+def getLabel(file):
     return file.split('_')[0]
 
 
 def TrimVideoClip(file):
     cleanText = getVideoName(file)
-    fileName = getCleanText(file)
+    fileName = getLabel(file)
 
     VideoNameDF = MSASL_Data.loc[(MSASL_Data['VideoName'] == fileName) & (
         MSASL_Data['clean_text'] == cleanText)]
@@ -94,6 +94,8 @@ def TrimVideoClip(file):
 
 def convert_to_frames(file):
     fileName = getVideoName(file)
+    label = getLabel(file)
+
     print("Converting to frame for video_name: ", file)
     vidcap = cv2.VideoCapture(os.path.join(TRIMMED_VIDEO_PATH, file))
     success, image = vidcap.read()
@@ -101,7 +103,7 @@ def convert_to_frames(file):
     while success:
         # image = cv2.cvtcolor(image,cv2.color_bgr2gray) # to convert image to grayscale
         # save frame as jpeg file
-        frameName = f'{fileName}_frame{frame_count}.jpg'
+        frameName = f'{fileName}_${label}_frame{frame_count}.jpg'
         cv2.imwrite(os.path.join(VIDEO_FRAME_PATH, str(frameName)), image)
         success, image = vidcap.read()
         print('read a new frame: ', success)
