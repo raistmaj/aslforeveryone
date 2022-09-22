@@ -1,5 +1,7 @@
 from fileinput import filename
 import os
+import random
+import shutil
 import cv2
 from os.path import join
 from pytube import YouTube
@@ -24,6 +26,8 @@ VIDEO_DOWNLOAD_PATH = os.path.join(os.getcwd(), 'data', 'videos')
 TRIMMED_VIDEO_PATH = os.path.join(
     os.getcwd(), 'data', 'videos', 'trimmedVideos')
 VIDEO_FRAME_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'frames')
+VIDEO_TRAIN_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'train')
+VIDEO_TEST_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'test')
 
 def process_videos():
     gestureList = set(["thank you", "goodbye", "hello", "yes", "no"])
@@ -110,7 +114,46 @@ def convert_to_frames(file):
         frame_count += 1
 
 
+def removeFramesWithoutLabel():
+    files = [f for f in os.listdir(VIDEO_FRAME_PATH) if os.path.isfile(
+        join(VIDEO_FRAME_PATH, f))]
+    for file in files:
+        if (file.split('.')[1] != 'jpg'):
+            continue
+        if not os.path.exists(os.path.join(VIDEO_FRAME_PATH, file.split('.')[0] + '.xml')):
+            os.remove(os.path.join(VIDEO_FRAME_PATH, file))
+
+
+def splitTrainAndTestData():
+    files = [f for f in os.listdir(VIDEO_FRAME_PATH) if os.path.isfile(
+        join(VIDEO_FRAME_PATH, f))]
+    for file in files:
+        if (file.split('.')[1] != 'jpg'):
+            continue
+        xmlFileName = file.split('.')[0] + '.xml'
+        xmlFile = os.path.join(VIDEO_FRAME_PATH, xmlFileName)
+        frameFile = os.path.join(VIDEO_FRAME_PATH, file)
+        # 80% train and 20% test
+        if random.random() < 0.8:
+            shutil.copy(frameFile, os.path.join(
+                VIDEO_TRAIN_PATH, file))
+            shutil.copy(xmlFile, os.path.join(
+                VIDEO_TRAIN_PATH, xmlFileName))
+        else:
+            shutil.copy(frameFile, os.path.join(
+                VIDEO_TEST_PATH, file))
+            shutil.copy(xmlFile, os.path.join(
+                VIDEO_TEST_PATH, xmlFileName))
+
+
 createPath(VIDEO_DOWNLOAD_PATH)
 createPath(TRIMMED_VIDEO_PATH)
 createPath(VIDEO_FRAME_PATH)
+createPath(VIDEO_TRAIN_PATH)
+createPath(VIDEO_TEST_PATH)
+
 process_videos()
+
+# label your data using labelImg after download, then run the following commands
+# removeFramesWithoutLabel()
+# splitTrainAndTestData()
