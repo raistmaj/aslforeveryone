@@ -18,7 +18,7 @@ detection_model = model_builder.build(
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(MODEL_PATH, 'ckpt-30')).expect_partial()
+ckpt.restore(os.path.join(MODEL_PATH, 'ckpt-21')).expect_partial() ## change this to the latest checkpoint
 
 
 @tf.function
@@ -64,7 +64,7 @@ while True:
         detections['detection_scores'],
         category_index,
         use_normalized_coordinates=True,
-        max_boxes_to_draw=5,
+        max_boxes_to_draw=1,
         min_score_thresh=.5,
         agnostic_mode=False)
 
