@@ -30,7 +30,7 @@ VIDEO_TRAIN_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'train')
 VIDEO_TEST_PATH = os.path.join(os.getcwd(), 'data', 'videos', 'test')
 
 def process_videos():
-    gestureList = set(["thank you", "goodbye", "hello", "yes", "no"])
+    gestureList = set(["letter"])
     download_videos(gestureList)
 
     # trim the video by the start and end time
@@ -72,7 +72,7 @@ def download_videos(classesToDownload):
 
 
 def getVideoName(file):
-    return file.split('_')[1][:-4]
+    return file.split('_', 1)[1][:-4]
 
 
 def getLabel(file):
@@ -80,13 +80,13 @@ def getLabel(file):
 
 
 def TrimVideoClip(file):
-    cleanText = getVideoName(file)
-    fileName = getLabel(file)
+    fileName = getVideoName(file)
+    cleanText = getLabel(file)
 
     VideoNameDF = MSASL_Data.loc[(MSASL_Data['VideoName'] == fileName) & (
         MSASL_Data['clean_text'] == cleanText)]
     if VideoNameDF.empty:
-        print("No video found" + fileName)
+        print("No video found: " + fileName)
         return
 
     start_time = VideoNameDF['start_time'].min()
