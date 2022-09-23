@@ -133,3 +133,5 @@ objectDetectionExample/data/videos
 objectDetectionExample/workspace/models
 objectDetectionExample/models/*
 !objectDetectionExample/models/pipeline.config
+
+data/
