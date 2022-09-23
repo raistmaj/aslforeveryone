@@ -107,7 +107,7 @@ def convert_to_frames(file):
     while success:
         # image = cv2.cvtcolor(image,cv2.color_bgr2gray) # to convert image to grayscale
         # save frame as jpeg file
-        frameName = f'{fileName}_${label}_frame{frame_count}.jpg'
+        frameName = f'{fileName}_{label}_frame{frame_count}.jpg'
         cv2.imwrite(os.path.join(VIDEO_FRAME_PATH, str(frameName)), image)
         success, image = vidcap.read()
         print('read a new frame: ', success)
